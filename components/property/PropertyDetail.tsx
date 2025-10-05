@@ -2,26 +2,8 @@ import { PropertyProps } from "@/interfaces/index";
 import { FaStar, FaMapMarkerAlt, FaBath } from "react-icons/fa";
 import { IoBedSharp, IoPeopleSharp } from "react-icons/io5";
 import BookingSection from "@/components/property/BookingSection";
-import ReviewSection from "@/components/property/ReviewSection";
 
 const PropertyDetail: React.FC<{ property: PropertyProps }> = ({ property }) => {
-  const mockReviews = [
-    {
-      name: "Jane Doe",
-      avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-      rating: 5,
-      comment:
-        "Absolutely loved this villa! The view was incredible and the amenities were top-notch.",
-    },
-    {
-      name: "John Smith",
-      avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-      rating: 4,
-      comment:
-        "Great stay overall, but WiFi could have been stronger. Would still recommend!",
-    },
-  ];
-
   return (
     <div className="space-y-12">
       {/* Title + Location */}
@@ -43,7 +25,7 @@ const PropertyDetail: React.FC<{ property: PropertyProps }> = ({ property }) => 
         </div>
       </div>
 
-      {/* Image Grid */}
+      {/* 🖼️ Image Grid */}
       <div className="w-full">
         <div className="hidden md:grid grid-cols-4 grid-rows-2 gap-2 h-[400px]">
           <img
@@ -85,48 +67,53 @@ const PropertyDetail: React.FC<{ property: PropertyProps }> = ({ property }) => 
         </div>
       </div>
 
-      {/* 🛏️ Bathroom / Bedroom / Occupants Info */}
-      <div className="flex flex-wrap items-center gap-6 text-gray-700 text-base mt-4">
-        <div className="flex items-center gap-2">
-          <IoBedSharp className="text-lg text-gray-600" />
-          <span>{property.offers.bed} bedrooms</span>
+      {/* 🧱 Description + Booking (Side by side on large screens) */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
+        {/* Left: Description */}
+        <div className="lg:col-span-2 space-y-8">
+          {/* Property Info */}
+          <div className="flex flex-wrap items-center gap-6 text-gray-700 text-base mt-4">
+            <div className="flex items-center gap-2">
+              <IoBedSharp className="text-lg text-gray-600" />
+              <span>{property.offers.bed} bedrooms</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <FaBath className="text-lg text-gray-600" />
+              <span>{property.offers.shower} bathrooms</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <IoPeopleSharp className="text-lg text-gray-600" />
+              <span>{property.offers.occupants} guests</span>
+            </div>
+          </div>
+
+          {/* Description */}
+          <div>
+            <h2 className="text-2xl font-semibold mb-2">Description</h2>
+            <p className="text-gray-700 leading-relaxed">{property.description}</p>
+          </div>
+
+          {/* Amenities */}
+          <div>
+            <h2 className="text-2xl font-semibold mb-4">What this place offers</h2>
+            <ul className="flex flex-wrap gap-3">
+              {property.category.map((amenity, index) => (
+                <li
+                  key={index}
+                  className="bg-gray-100 px-3 py-2 rounded-md text-sm text-gray-700"
+                >
+                  {amenity}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <FaBath className="text-lg text-gray-600" />
-          <span>{property.offers.shower} bathrooms</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <IoPeopleSharp className="text-lg text-gray-600" />
-          <span>{property.offers.occupants} guests</span>
+
+        {/* Right: Booking Section */}
+        <div>
+          <BookingSection price={property.price} />
         </div>
       </div>
-
-      {/* Description */}
-      <div>
-        <h2 className="text-2xl font-semibold mb-2">Description</h2>
-        <p className="text-gray-700 leading-relaxed">{property.description}</p>
-      </div>
-
-      {/* Amenities */}
-      <div>
-        <h2 className="text-2xl font-semibold mb-4">What this place offers</h2>
-        <ul className="flex flex-wrap gap-3">
-          {property.category.map((amenity, index) => (
-            <li
-              key={index}
-              className="bg-gray-100 px-3 py-2 rounded-md text-sm text-gray-700"
-            >
-              {amenity}
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      {/* Booking Section */}
-      <BookingSection price={property.price} />
-
-      {/* Reviews */}
-      <ReviewSection reviews={mockReviews} />
     </div>
   );
 };
